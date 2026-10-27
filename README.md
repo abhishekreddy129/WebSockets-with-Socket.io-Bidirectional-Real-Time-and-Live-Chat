@@ -1,9 +1,8 @@
 # Threadbase - Live Chat with Socket.io (Starter)
 
-Add a real-time chat feature to Threadbase using Socket.io: wrap the HTTP server,
-authenticate sockets with JWT, use a room to scope the thread's messages, and wire a
-React `useSocket` hook. Two windows on the same thread should see each other's messages
-instantly.
+Threadbase includes a real-time chat feature using Socket.io. Socket connections are
+authenticated with JWT, and rooms scope each thread's messages so windows on the same
+thread see each other's messages instantly.
 
 ## Setup
 
@@ -15,19 +14,16 @@ cd server && cp .env.example .env && npm install && npm start
 cd client && cp .env.development.example .env.development && npm install && npm run dev
 ```
 
-`socket.io` and `socket.io-client` are **not** installed yet - installing them is Task 1.
+The server and client dependencies include `socket.io` and `socket.io-client`.
 
-## What you will do
+## Implementation
 
-1. `npm install socket.io` (server) and `npm install socket.io-client` (client).
-2. In `server/server.js`: wrap the app with `createServer`, attach Socket.io with CORS,
-   add `io.use` JWT auth, add `room:join` and `chat:message` handlers, and switch
-   `app.listen` to `httpServer.listen`.
-3. In `client/src/hooks/useSocket.js`: create the socket with `auth: { token }`, join the
-   room, listen for `chat:message`, and clean up with `socket.off()` + `socket.disconnect()`.
+The Express app is attached to an HTTP server shared with Socket.io. Socket connections
+must present the login JWT; authenticated clients can join a room and broadcast messages
+with their server-verified sender identity. The React `useSocket` hook manages the
+connection lifecycle, room subscription, incoming messages, and cleanup.
 
-`client/src/components/ChatRoom.jsx` is already wired to `useSocket` - once the hook works,
-the UI works.
+`client/src/components/ChatRoom.jsx` uses the hook to render and send live messages.
 
 ## Testing your work
 
